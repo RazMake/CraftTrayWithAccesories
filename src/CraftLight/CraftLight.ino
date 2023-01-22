@@ -7,6 +7,8 @@
 #include "Logging.h"
 #include "CraftLightFunction.h"
 #include "NormalFunction.h"
+#include "ColorSelectorFunction.h"
+#include "ShapeSelectorFunction.h"
 
 // Instantiate the Neopixel library. It is used to control the RGB lights that make up the Craft Light.
 // The original version uses RGB lights (not RGBW), because that is what I had available.
@@ -18,17 +20,26 @@ Adafruit_NeoPixel pixels(
   NEO_GRB + NEO_KHZ800 // The type of LED strip being used in the Craft Light
   );
 
-// The possible functions of the Craft Light:
-NormalFunction normalFunction(pixels);
+// The existing functions of the Craft Light:
+const unsigned char FunctionsCount = 3;
+CraftLightFunction* functions[FunctionsCount] =
+{
+  new ColorSelectorFunction(pixels),
+  new NormalFunction(pixels),
+  new ShapeSelectorFunction(pixels)
+};
 
-// The currently selected function:
-CraftLightFunction* currentFunction = &normalFunction;
+// The currently selected function (we always start, at power on, with NormalFunction):
+unsigned char activeFunction = 1;
+
+
 
 // This callback is invoked for any of the DPad controls being manipulated (all buttons and rotary encoder).
 // It wires the event to the right method on the current function of the Craft Light.
 // This method is passed in the constructor on the DPad controller.
 void DPadEvent(const char eventType, const long eventData)
 {
+  CraftLightFunction* currentFunction = functions[activeFunction];
   switch(eventType)
   {
     case DPadController::ButtonClicked:
@@ -36,8 +47,8 @@ void DPadEvent(const char eventType, const long eventData)
       {
         case DPadController::UpButton: currentFunction->UpButtonEvent(DPadController::ButtonClicked);break;
         case DPadController::DownButton: currentFunction->DownButtonEvent(DPadController::ButtonClicked);break;
-        case DPadController::LeftButton: currentFunction->LeftButtonEvent(DPadController::ButtonClicked);break;
-        case DPadController::RightButton: currentFunction->RightButtonEvent(DPadController::ButtonClicked);break;
+        case DPadController::LeftButton: functions[activeFunction = activeFunction == 0 ? FunctionsCount - 1 : activeFunction - 1]->activate(); break;
+        case DPadController::RightButton: functions[activeFunction = activeFunction == FunctionsCount - 1 ? 0 : activeFunction + 1]->activate(); break;
         case DPadController::CenterButton: currentFunction->CenterButtonEvent(DPadController::ButtonClicked);break;
       }
       break;
@@ -89,6 +100,7 @@ void setup(void)
   LOGGING_INIT;
   pinMode(LED_BUILTIN, OUTPUT); // The built in led is used as a watchdog so I can tell the code is running on the controller.
   SETUP_DPADCONTROLLER(controller);
+  functions[activeFunction]->activate();
 }
 
 bool turnLedOn = true;

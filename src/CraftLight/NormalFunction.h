@@ -1,4 +1,4 @@
-#ifndef NormaltFunction_h
+#ifndef NormalFunction_h
 #define NormalFunction_h
 
 #include <Adafruit_NeoPixel.h>
@@ -59,6 +59,11 @@ class NormalFunction : public CraftLightFunction
     /// </summary>
     /// <param name="delta">The number of ticks the rotary wheel was moved (positive = the wheel was moved left, negative it was moved right).</param>
     void RotaryEncoderEvent(const int delta);
+
+    /// <summary>
+    /// This method is invoked by the main sketch when it bring this function to the forefront (when it makes it THE active function).
+    /// </summary>
+    void activate();
 
   private:
     Adafruit_NeoPixel& pixels;

@@ -1,4 +1,4 @@
-#include "NormalFunction.h"
+#include "ShapeSelectorFunction.h"
 
 #ifdef LoggingEnabled
     #define LOGBUTTONEVENT(buttonName, eventType) \
@@ -11,46 +11,46 @@
       case DPadController::ButtonLongPressed: LOG(" was long pressed");break; \
       default: LOG(" ??"); \
     } \
-    LOGLN(" in NormalFunction app");
+    LOGLN(" in ShapeSelector app");
 #else
     #define LOGBUTTONEVENT(buttonName, eventType)
 #endif
 
-NormalFunction::NormalFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
+ShapeSelectorFunction::ShapeSelectorFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
 {
 }
 
-void NormalFunction::activate()
+void ShapeSelectorFunction::activate()
 {
-LOGLN("NormalFunction is active");
+  LOGLN("ShapeSelectorFunction is active");
 }
 
-void NormalFunction::UpButtonEvent(const char eventType)
+void ShapeSelectorFunction::UpButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Up", eventType);
 }
 
-void NormalFunction::DownButtonEvent(const char eventType)
+void ShapeSelectorFunction::DownButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Down", eventType);
 }
 
-void NormalFunction::LeftButtonEvent(const char eventType)
+void ShapeSelectorFunction::LeftButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Left", eventType);
 }
 
-void NormalFunction::RightButtonEvent(const char eventType)
+void ShapeSelectorFunction::RightButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Right", eventType);
 }
 
-void NormalFunction::CenterButtonEvent(const char eventType)
+void ShapeSelectorFunction::CenterButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Center", eventType);
 }
 
-void NormalFunction::RotaryEncoderEvent(const int delta)
+void ShapeSelectorFunction::RotaryEncoderEvent(const int delta)
 {
     LOG("Rotary ENC: Delta = ");
     LOGLN(delta);

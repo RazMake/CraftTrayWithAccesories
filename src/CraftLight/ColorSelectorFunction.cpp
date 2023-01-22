@@ -1,4 +1,4 @@
-#include "NormalFunction.h"
+#include "ColorSelectorFunction.h"
 
 #ifdef LoggingEnabled
     #define LOGBUTTONEVENT(buttonName, eventType) \
@@ -11,46 +11,46 @@
       case DPadController::ButtonLongPressed: LOG(" was long pressed");break; \
       default: LOG(" ??"); \
     } \
-    LOGLN(" in NormalFunction app");
+    LOGLN(" in ColorSelectorFunction app");
 #else
     #define LOGBUTTONEVENT(buttonName, eventType)
 #endif
 
-NormalFunction::NormalFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
+ColorSelectorFunction::ColorSelectorFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
 {
 }
 
-void NormalFunction::activate()
+void ColorSelectorFunction::activate()
 {
-LOGLN("NormalFunction is active");
+  LOGLN("ColorSelectorFunction is active");
 }
 
-void NormalFunction::UpButtonEvent(const char eventType)
+void ColorSelectorFunction::UpButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Up", eventType);
 }
 
-void NormalFunction::DownButtonEvent(const char eventType)
+void ColorSelectorFunction::DownButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Down", eventType);
 }
 
-void NormalFunction::LeftButtonEvent(const char eventType)
+void ColorSelectorFunction::LeftButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Left", eventType);
 }
 
-void NormalFunction::RightButtonEvent(const char eventType)
+void ColorSelectorFunction::RightButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Right", eventType);
 }
 
-void NormalFunction::CenterButtonEvent(const char eventType)
+void ColorSelectorFunction::CenterButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Center", eventType);
 }
 
-void NormalFunction::RotaryEncoderEvent(const int delta)
+void ColorSelectorFunction::RotaryEncoderEvent(const int delta)
 {
     LOG("Rotary ENC: Delta = ");
     LOGLN(delta);

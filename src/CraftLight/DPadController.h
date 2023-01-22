@@ -1,7 +1,7 @@
 #ifndef DPadController_h
 #define DPadController_h
 
-#include <RotaryEncoder.h>
+#include "RotaryEncoder.h"
 #include "Logging.h"
 #include "DPadButton.h"
 
@@ -17,7 +17,8 @@
 /// <param name="pinLeftButton">The digital pin connected to the LEFT button on the DPAD.</parm>
 /// <param name="pinRightButton">The digital pin connected to the RIGHT button on the DPAD.</parm>
 /// <param name="pinCenterButton">The digital pin connected to the CENTER button on the DPAD.</parm>
-#define INSTANTIATE_DPADCONTROLLER(controllerVarName, pinEncA, pinEncB, pinUpButton, pinDownButton, pinLeftButton, pinRightButton, pinCenterButton) \
+/// <param name="eventHandlerCallback">The callback method to be invoked  when the controls on the DPad are manipulated.</param>
+#define INSTANTIATE_DPADCONTROLLER(controllerVarName, pinEncA, pinEncB, pinUpButton, pinDownButton, pinLeftButton, pinRightButton, pinCenterButton, eventHandlerCallback) \
 int controllerVarName##Encoder_pinEncA = pinEncA; \
 int controllerVarName##Encoder_pinEncB = pinEncB; \
 RotaryEncoder controllerVarName##Encoder( \
@@ -32,7 +33,7 @@ DPadButton* controllerVarName##Buttons[] = { \
   new DPadButton(pinRightButton, "Right"), \
   new DPadButton(pinCenterButton, "Center") \
 }; \
-DPadController controllerVarName(controllerVarName##Encoder, controllerVarName##Buttons);
+DPadController controllerVarName(controllerVarName##Encoder, controllerVarName##Buttons, eventHandlerCallback);
 
 /// <summary>
 /// This macro is initializing a DPadController, connected to the specified pins.
@@ -59,13 +60,59 @@ class DPadController
     /// </summary>
     /// <param name="encoder">The rotary encoder on the DPAD.</parm>
     /// <param name="buttons">An array containing the buttons in the following order (up, down, left, right, center).</parm>
-    DPadController(RotaryEncoder& encoder, DPadButton* buttons[5]);
+    /// <param name="dpadEventCallback">The callback </param>
+    DPadController(RotaryEncoder& encoder, DPadButton* buttons[5], void(*dpadEventCallback)(const char, const long));
 
     /// <summary>
     /// This method must be called from the main loop to refresh the internal state of the controller
     /// and call the appropriate callbacks.
     /// </summary>
     void updateState();
+
+    /// <summary>
+    /// Constant: [Event Type] One of the buttons on the DPad was clicked.
+    /// </summary>
+    static const char ButtonClicked = 10;
+
+    /// <summary>
+    /// Constant: [Event Type] One of the buttons on the DPad was double clicked.
+    /// </summary>
+    static const char ButtonDoubleClicked = 20;
+
+    /// <summary>
+    /// Constant: [Event Type] One of the buttons on the DPad was long pressed.
+    /// </summary>
+    static const char ButtonLongPressed = 30;
+
+    /// <summary>
+    /// Constant: [Event Type] The wheel on the DPad (the rotary encoder) was moved.
+    /// </summary>
+    static const char RotaryEncoderMoved = 40;
+
+    /// <summary>
+    /// Constant: [Button] UP
+    /// </summary>
+    static const int UpButton = 0;
+
+    /// <summary>
+    /// Constant: [Button] DOWN
+    /// </summary>
+    static const int DownButton = 1;
+
+    /// <summary>
+    /// Constant: [Button] LEFT
+    /// </summary>
+    static const int LeftButton = 2;
+
+    /// <summary>
+    /// Constant: [Button] RIGHT
+    /// </summary>
+    static const int RightButton = 3;
+
+    /// <summary>
+    /// Constant: [Button] CENTER (Enter/Ok)
+    /// </summary>
+    static const int CenterButton = 4;
 
   private:
     // The object that manages the state of the rotary encoder.
@@ -75,5 +122,7 @@ class DPadController
     // This is used to determine how much did the rotary encoder moved.
     // It has a negative value for rotation to the left and a positive value for rotation to the right.
     long lastEncoderPosition = 0;
+    // The callback to be invoked when DPad controller is manipulated.
+    void(*dpadEventCallback)(const char, const long);
 };
 #endif

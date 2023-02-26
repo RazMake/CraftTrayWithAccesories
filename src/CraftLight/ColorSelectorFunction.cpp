@@ -16,7 +16,7 @@
     #define LOGBUTTONEVENT(buttonName, eventType)
 #endif
 
-ColorSelectorFunction::ColorSelectorFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
+ColorSelectorFunction::ColorSelectorFunction(NeoPixelMatrix& pixels) : pixels(pixels)
 {
 }
 

@@ -1,7 +1,7 @@
 #ifndef NormalFunction_h
 #define NormalFunction_h
 
-#include <Adafruit_NeoPixel.h>
+#include "NeoPixelMatrix.h"
 #include "CraftLightFunction.h"
 #include "DPadController.h"
 #include "Logging.h"
@@ -16,7 +16,7 @@ class NormalFunction : public CraftLightFunction
     /// Initializes a new instance of the <see cref="NormalFunction" /> class.
     /// </summary>
     /// <param name="pixels">The controller for the LEDs that make up the light.</param>
-    NormalFunction(Adafruit_NeoPixel& pixels);
+    NormalFunction(NeoPixelMatrix& pixels);
 
     /// <summary>
     /// This method is called (on the currently active "light function") so it can peform the specific work, when UP
@@ -66,6 +66,7 @@ class NormalFunction : public CraftLightFunction
     void activate();
 
   private:
-    Adafruit_NeoPixel& pixels;
+    NeoPixelMatrix& pixels;
+    bool isLightOn;
 };
 #endif

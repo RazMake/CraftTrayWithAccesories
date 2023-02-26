@@ -12,13 +12,11 @@
 
 // Instantiate the Neopixel library. It is used to control the RGB lights that make up the Craft Light.
 // The original version uses RGB lights (not RGBW), because that is what I had available.
-Adafruit_NeoPixel pixels(
-  96, // The number of pixels available
-      // There are two rows of LEDs, each containing X LEDs, counting starts from left most,
-      // front row one.
-  9,  // The digital pin used to send the commands to the LED strip
-  NEO_GRB + NEO_KHZ800 // The type of LED strip being used in the Craft Light
-  );
+NeoPixelMatrix pixels(
+  3,  // Number of rows the pixels are organized in
+  96, // The number of pixels on a single row available
+  9); // The digital pin used to send the commands to the LED strip
+  
 
 // The existing functions of the Craft Light:
 const unsigned char FunctionsCount = 3;
@@ -100,6 +98,7 @@ void setup(void)
   LOGGING_INIT;
   pinMode(LED_BUILTIN, OUTPUT); // The built in led is used as a watchdog so I can tell the code is running on the controller.
   SETUP_DPADCONTROLLER(controller);
+  pixels.Setup();
   functions[activeFunction]->activate();
 }
 

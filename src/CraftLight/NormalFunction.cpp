@@ -16,13 +16,14 @@
     #define LOGBUTTONEVENT(buttonName, eventType)
 #endif
 
-NormalFunction::NormalFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
+NormalFunction::NormalFunction(NeoPixelMatrix& pixels) : pixels(pixels)
 {
+  this->isLightOn = false;
 }
 
 void NormalFunction::activate()
 {
-LOGLN("NormalFunction is active");
+  LOGLN("NormalFunction is active");
 }
 
 void NormalFunction::UpButtonEvent(const char eventType)
@@ -48,10 +49,33 @@ void NormalFunction::RightButtonEvent(const char eventType)
 void NormalFunction::CenterButtonEvent(const char eventType)
 {
   LOGBUTTONEVENT("Center", eventType);
+  if (!this->isLightOn)
+  {
+    this->isLightOn = true;
+    LOGLN("Turning light on");
+    this->pixels.TurnOn();
+  }
+  else
+  {
+    this->isLightOn = false;
+    LOGLN("Turning light off");
+    this->pixels.TurnOff();
+  }
 }
 
 void NormalFunction::RotaryEncoderEvent(const int delta)
 {
     LOG("Rotary ENC: Delta = ");
     LOGLN(delta);
+    if (this->isLightOn)
+    {
+      if (delta > 0)
+      {
+        this->pixels.IncBarLength();
+      }
+      else if (delta < 0)
+      {
+        this->pixels.DecBarLength();
+      }
+    }
 }

@@ -1,7 +1,7 @@
 #ifndef ShapeSelectorFunction_h
 #define ShapeSelectorFunction_h
 
-#include <Adafruit_NeoPixel.h>
+#include "NeoPixelMatrix.h"
 #include "CraftLightFunction.h"
 #include "NormalFunction.h"
 #include "DPadController.h"
@@ -17,7 +17,7 @@ class ShapeSelectorFunction : public CraftLightFunction
     /// Initializes a new instance of the <see cref="ShapeSelectorFunction" /> class.
     /// </summary>
     /// <param name="pixels">The controller for the LEDs that make up the light.</param>
-    ShapeSelectorFunction(Adafruit_NeoPixel& pixels);
+    ShapeSelectorFunction(NeoPixelMatrix& pixels);
 
     /// <summary>
     /// This method is called (on the currently active "light function") so it can peform the specific work, when UP
@@ -67,6 +67,6 @@ class ShapeSelectorFunction : public CraftLightFunction
     void activate();
 
   private:
-    Adafruit_NeoPixel& pixels;
+    NeoPixelMatrix& pixels;
 };
 #endif

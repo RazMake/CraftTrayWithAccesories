@@ -16,7 +16,7 @@
     #define LOGBUTTONEVENT(buttonName, eventType)
 #endif
 
-ShapeSelectorFunction::ShapeSelectorFunction(Adafruit_NeoPixel& pixels) : pixels(pixels)
+ShapeSelectorFunction::ShapeSelectorFunction(NeoPixelMatrix& pixels) : pixels(pixels)
 {
 }
 
